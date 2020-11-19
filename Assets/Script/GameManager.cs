@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public Text scoreText;
     public Image[] lifeImage;
     public GameObject gameOverSet;
+    public GameObject ClearSet;
 
     public float maxSpawnDelay;
     public float curSpawnDelay;
@@ -55,27 +56,31 @@ public class GameManager : MonoBehaviour
     */
     void SpawnEnemy()
     {
-        gameOverSet = GameObject.Find("Canvas").transform.Find("OverSet").gameObject;
-        if (gameOverSet.activeSelf == false)
+        gameOverSet = GameObject.Find("Canvas").transform.Find("Panel_OverSet").gameObject;
+        ClearSet = GameObject.Find("Canvas").transform.Find("Panel_ClearSet").gameObject;
+        if (gameOverSet.activeSelf == false && ClearSet.activeSelf == false)
         {
             int ranEnemy = 0;
             int ranPoint = Random.Range(0, 5);
             Instantiate(enemyObjects[ranEnemy], spawnPoints[ranPoint].position,
                 spawnPoints[ranPoint].rotation);
         }
+        
+
     }
 
 
     void SpawnCitrus()
     {
-        gameOverSet = GameObject.Find("Canvas").transform.Find("OverSet").gameObject;
-        if (gameOverSet.activeSelf == false)
+        gameOverSet = GameObject.Find("Canvas").transform.Find("Panel_OverSet").gameObject;
+        ClearSet = GameObject.Find("Canvas").transform.Find("Panel_ClearSet").gameObject;
+        if (gameOverSet.activeSelf == false && ClearSet.activeSelf == false)
         {
-
             int ranCitrus = 0;
             int ranPoint = Random.Range(0, 5);
             Instantiate(citrusObjects[ranCitrus], spawnPoints[ranPoint].position, spawnPoints[ranPoint].rotation);
         }
+        
     }
 
 }

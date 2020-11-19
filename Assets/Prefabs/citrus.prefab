@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 3192640495384108246}
   - component: {fileID: 3192640495384108247}
   - component: {fileID: 3192640495384108251}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: citrus
-  m_TagString: Item
+  m_TagString: Citrus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

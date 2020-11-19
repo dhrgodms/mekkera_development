@@ -15,6 +15,8 @@ public class PlayerMove : MonoBehaviour
     public GameObject life1, life2, life3;
     public GameObject player;
     public GameObject gameOverSet;
+    public GameObject ClearSet;
+    public GameObject MenuSet;
     Rigidbody2D rigid;
     SpriteRenderer spriteRenderer;
     GameManager manager;
@@ -37,6 +39,11 @@ public class PlayerMove : MonoBehaviour
         Vector3 nextPos = new Vector3(h, 0, 0) * maxSpeed * Time.deltaTime;
 
         transform.position = curPos + nextPos;
+
+        //ESC키 누르면 게임종ㄹ
+        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+
+        
        
     }
 
@@ -67,12 +74,15 @@ public class PlayerMove : MonoBehaviour
         }
 
         //귤 닿으면 점수 +1
-        if (collision.gameObject.tag == "Item")
+        if (collision.gameObject.tag == "Citrus")
         {
             UpPoint();
             collision.gameObject.SetActive(false);
             Destroy(collision.gameObject);
-
+            if (point == 45)
+            {
+                GameClear();
+            }
         }
     }
     void OnTriggerExit2D(Collider2D collision)
@@ -113,7 +123,6 @@ public class PlayerMove : MonoBehaviour
         }
 
 
-
         //View Alpha
         spriteRenderer.color = new Color(1, 1, 1, 0.4f);
         Invoke("OffDamaged", 0.5f);
@@ -129,18 +138,71 @@ public class PlayerMove : MonoBehaviour
     {
         gameObject.layer = 11;
 
-        point += 1;
+        if (point < 45) point += 1;
+        else return; //45개 이상 받으면 점수 더이상 안올라ㄴ
         spriteRenderer.color = new Color(1, 1, 1, 0.4f);
         Invoke("OffDamaged", 0.5f);
+        
     }
+    //게임시작 누르면 게임 Start
+    public void GameStart()
+    {
+        SceneManager.LoadScene("SampleScene");
+        Time.timeScale = 1;
+    }
+    //게임설명 누르면 게임 설명서 나옴
+    public void GameGuide()
+    {
+        SceneManager.LoadScene("GuideScene");
+    }
+    //지렁이 3개 받으면 게임오버
     public void GameOver()
     {
         gameOverSet.SetActive(true);
+        Reset();
+        
     }
+    //귤 45개 받으면 게임 클리어
+    public void GameClear()
+    {
+        ClearSet.SetActive(true);
+        Reset();
+    }
+    //다시하기 누르면 게임 다시 시작
     public void GameRetry()
     {
         SceneManager.LoadScene("SampleScene");
+        Time.timeScale = 1;
     }
-    
+    //닫기 누르면 게임종료
+    public void GameEnd()
+    {
+        Application.Quit();
+    }
+    public void GoStart()
+    {
+        SceneManager.LoadScene("StartScene");
+    }
+    public void Menu()
+    { 
+        MenuSet = GameObject.Find("Canvas").transform.Find("Panel_MenuSet").transform.Find("MenuSet").gameObject;
+        MenuSet.SetActive(true);
+        Time.timeScale = 0;
+
+    }
+    public void MenuClose()
+    {
+        MenuSet.SetActive(false);
+        Time.timeScale = 1;
+    }
+    private void Reset()
+    {
+        player.SetActive(false);
+        GameObject[] enemy = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] citrus = GameObject.FindGameObjectsWithTag("Citrus");
+        foreach (GameObject test in enemy) { test.SetActive(false); }
+        foreach (GameObject test1 in citrus) { test1.SetActive(false); }
+    }
+
 
 }
